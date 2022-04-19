@@ -1,0 +1,95 @@
+#include <Adafruit_NeoPixel.h>
+
+#include <Keypad.h>
+
+
+const byte ROWS = 4; //four rows
+const byte COLS = 4; //four columns
+//define the cymbols on the buttons of the keypads
+char hexaKeys[ROWS][COLS] = {
+  {'1', '2', '3', 'A'},
+  {'4', '5', '6', 'B'},
+  {'7', '8', '9', 'C'},
+  {'*', '0', '#', 'D'}
+};
+byte rowPins[ROWS] = {22, 24, 26, 30}; //connect to the row pinouts of the keypad
+byte colPins[COLS] = {23, 25, 27, 29}; //connect to the column pinouts of the keypad
+
+Keypad keypad = Keypad( makeKeymap(hexaKeys), rowPins, colPins, ROWS, COLS );
+int pin = 5;
+int ledCount = 12;
+int pinp = 3;
+int ledCountp = 12;
+Adafruit_NeoPixel pixels(ledCount, pin, NEO_RGB + NEO_KHZ800);
+Adafruit_NeoPixel strip(ledCountp, pinp, NEO_RGB + NEO_KHZ800);
+
+int delayval = 100; // timing delay in milliseconds
+
+uint32_t off = pixels.Color(0, 0, 0);
+uint32_t blue = pixels.Color(51, 153, 255);
+uint32_t purple = pixels.Color(255, 0, 255);
+uint32_t red = pixels.Color(255, 0, 0);
+uint32_t white = pixels.Color(200, 200, 200);
+uint32_t offp =strip.Color(0, 0, 0);
+uint32_t bluep =strip.Color(51, 153, 255);
+uint32_t purplep =strip.Color(255, 0, 255);
+uint32_t redp =strip.Color(255, 0, 0);
+uint32_t whitep =strip.Color(200, 200, 200);
+uint32_t green = pixels.Color(0, 255, 0);
+uint32_t greenp =strip.Color(0, 255, 0);
+uint32_t yellow = pixels.Color(255, 255, 0);
+uint32_t yellowp =strip.Color(255, 255, 0);
+uint32_t lightPink = pixels.Color(252, 100, 151);
+uint32_t lightPinkp =strip.Color(252, 100, 151);
+uint32_t lightPurple = pixels.Color(94, 41, 89);
+uint32_t lightPurplep =strip.Color(94, 41, 89);
+uint32_t lightGreen = pixels.Color(65, 112, 62);
+uint32_t lightGreenp =strip.Color(65, 112, 62);
+uint32_t Wheel(byte WheelPos) {
+  if (WheelPos < 85) {
+    return pixels.Color(WheelPos * 3, 255 - WheelPos * 3, 0);
+  }
+  else if (WheelPos < 170) {
+    WheelPos -= 85;
+    return pixels.Color(255 - WheelPos * 3, 0, WheelPos * 3);
+  }
+  else {
+    WheelPos -= 170;
+    return pixels.Color(0, WheelPos * 3, 255 - WheelPos * 3);
+  }
+}
+uint32_t Wheelp(byte WheelpPos) {
+  if (WheelpPos < 85) {
+    return strip.Color(WheelpPos * 3, 255 - WheelpPos * 3, 0);
+  }
+  else if (WheelpPos < 170) {
+    WheelpPos -= 85;
+    return strip.Color(255 - WheelpPos * 3, 0, WheelpPos * 3);
+  }
+  else {
+    WheelpPos -= 170;
+    return strip.Color(0, WheelpPos * 3, 255 - WheelpPos * 3);
+  }
+}
+
+void setup()
+{
+
+  Serial.begin(9600);
+  strip.begin();
+  pixels.begin();
+  pixels.show();
+  pixels.setBrightness(127);
+  strip.setBrightness(127);
+
+}
+
+float s;
+long unsigned int color_a;
+long unsigned int color_b;
+void loop() {
+while(true){
+strip.fill(blue, 0, ledCountp);
+strip.show();
+}
+}
