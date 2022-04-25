@@ -12,7 +12,7 @@ char hexaKeys[ROWS][COLS] = {
   {'7', '8', '9', 'C'},
   {'*', '0', '#', 'D'}
 };
-byte rowPins[ROWS] = {22, 24, 26, 30}; //connect to the row pinouts of the keypad
+byte rowPins[ROWS] = {22, 24, 26, 28}; //connect to the row pinouts of the keypad
 byte colPins[COLS] = {23, 25, 27, 29}; //connect to the column pinouts of the keypad
 
 Keypad keypad = Keypad( makeKeymap(hexaKeys), rowPins, colPins, ROWS, COLS );
