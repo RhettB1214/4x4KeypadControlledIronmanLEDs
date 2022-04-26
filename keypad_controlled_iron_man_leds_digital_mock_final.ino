@@ -18,7 +18,7 @@ byte colPins[COLS] = {23, 25, 27, 29}; //connect to the column pinouts of the ke
 Keypad keypad = Keypad( makeKeymap(hexaKeys), rowPins, colPins, ROWS, COLS );
 int pin = 6;
 int ledCount = 12;
-int pinp = 5;
+int pinp = 3;
 int ledCountp = 24;
 Adafruit_NeoPixel pixels(ledCount, pin, NEO_RGB + NEO_KHZ800);
 Adafruit_NeoPixel strip(ledCountp, pinp, NEO_RGB + NEO_KHZ800);
@@ -207,7 +207,8 @@ void loop() {
       while (keypad.getKey() == NO_KEY) {
         strip.fill(color_b, 0, ledCountp);
         strip.show();
-        delay(60000);
+        Serial.println("about to delay for 5 seconds");
+        delay(5000);
         strip.fill(offp, 0, ledCountp);
         strip.show();
         delay(100);
@@ -225,15 +226,17 @@ void loop() {
         delay(100);
         strip.fill(color_b, 0, ledCountp);
         strip.show();
+        Serial.println("looping");
       }
+      Serial.println("leaving loop");
       break;
 
     case '#':
-      //while(keypad.getKey() == NO_KEY){
+      while(keypad.getKey() == NO_KEY){
 
       rainbow(s);
       rainbowp(s);
-      //}
+      }
       break;
 
     case 'D':
@@ -245,5 +248,6 @@ void loop() {
       break;
   }
 }
+
 
 
