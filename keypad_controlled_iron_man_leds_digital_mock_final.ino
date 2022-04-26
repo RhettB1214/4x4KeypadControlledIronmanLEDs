@@ -1,7 +1,7 @@
 #include <Adafruit_NeoPixel.h>
-//#include <rp2040_pio.h>
+
 #include <Keypad.h>
-//#include <Adafruit_NeoPixel.h>
+
 
 const byte ROWS = 4; //four rows
 const byte COLS = 4; //four columns
