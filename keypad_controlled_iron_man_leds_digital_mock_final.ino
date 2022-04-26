@@ -21,7 +21,7 @@ int ledCount = 12;
 int pinp = 5;
 int ledCountp = 24;
 Adafruit_NeoPixel pixels(ledCount, pin, NEO_RGB + NEO_KHZ800);
-Adafruit_NeoPixel pixelsp(ledCountp, pinp, NEO_RGB + NEO_KHZ800);
+Adafruit_NeoPixel strip(ledCountp, pinp, NEO_RGB + NEO_KHZ800);
 
 int delayval = 100; // timing delay in milliseconds
 uint32_t off = pixels.Color(0, 0, 0);
@@ -29,21 +29,21 @@ uint32_t blue = pixels.Color(51, 153, 255);
 uint32_t purple = pixels.Color(255, 0, 255);
 uint32_t red = pixels.Color(255, 0, 0);
 uint32_t white = pixels.Color(200, 200, 200);
-uint32_t offp = pixelsp.Color(0, 0, 0);
-uint32_t bluep = pixelsp.Color(51, 153, 255);
-uint32_t purplep = pixelsp.Color(255, 0, 255);
-uint32_t redp = pixelsp.Color(255, 0, 0);
-uint32_t whitep = pixelsp.Color(200, 200, 200);
+uint32_t offp = strip.Color(0, 0, 0);
+uint32_t bluep = strip.Color(51, 153, 255);
+uint32_t purplep = strip.Color(255, 0, 255);
+uint32_t redp = strip.Color(255, 0, 0);
+uint32_t whitep = strip.Color(200, 200, 200);
 uint32_t green = pixels.Color(0, 255, 0);
-uint32_t greenp = pixelsp.Color(0, 255, 0);
+uint32_t greenp = strip.Color(0, 255, 0);
 uint32_t yellow = pixels.Color(255, 255, 0);
-uint32_t yellowp = pixelsp.Color(255, 255, 0);
+uint32_t yellowp = strip.Color(255, 255, 0);
 uint32_t lightPink = pixels.Color(252, 100, 151);
-uint32_t lightPinkp = pixelsp.Color(252, 100, 151);
+uint32_t lightPinkp = strip.Color(252, 100, 151);
 uint32_t lightPurple = pixels.Color(94, 41, 89);
-uint32_t lightPurplep = pixelsp.Color(94, 41, 89);
+uint32_t lightPurplep = strip.Color(94, 41, 89);
 uint32_t lightGreen = pixels.Color(65, 112, 62);
-uint32_t lightGreenp = pixelsp.Color(65, 112, 62);
+uint32_t lightGreenp = strip.Color(65, 112, 62);
 uint32_t Wheel(byte WheelPos) {
   if (WheelPos < 85) {
     return pixels.Color(WheelPos * 3, 255 - WheelPos * 3, 0);
@@ -59,15 +59,15 @@ uint32_t Wheel(byte WheelPos) {
 }
 uint32_t Wheelp(byte WheelpPos) {
   if (WheelpPos < 85) {
-    return pixelsp.Color(WheelpPos * 3, 255 - WheelpPos * 3, 0);
+    return strip.Color(WheelpPos * 3, 255 - WheelpPos * 3, 0);
   }
   else if (WheelpPos < 170) {
     WheelpPos -= 85;
-    return pixelsp.Color(255 - WheelpPos * 3, 0, WheelpPos * 3);
+    return strip.Color(255 - WheelpPos * 3, 0, WheelpPos * 3);
   }
   else {
     WheelpPos -= 170;
-    return pixelsp.Color(0, WheelpPos * 3, 255 - WheelpPos * 3);
+    return strip.Color(0, WheelpPos * 3, 255 - WheelpPos * 3);
   }
 }
 void setup()
@@ -76,8 +76,10 @@ void setup()
   Serial.begin(9600);
   pixels.begin();
   pixels.show();
+  strip.begin();
+  strip.show();
   pixels.setBrightness(127);
-  pixelsp.setBrightness(127);
+  strip.setBrightness(127);
 
 }
 void rainbow(uint8_t wait) {
@@ -95,10 +97,10 @@ void rainbowp(uint8_t wait) {
   uint16_t i, j;
 
   for (j = 0; j < 256; j++) {
-    for (i = 0; i < pixelsp.numPixels(); i++) {
-      pixelsp.setPixelColor(i, Wheelp((i * 1 + j) & 255));
+    for (i = 0; i < strip.numPixels(); i++) {
+      strip.setPixelColor(i, Wheelp((i * 1 + j) & 255));
     }
-    pixelsp.show();
+    strip.show();
 
   }
 }
@@ -196,33 +198,33 @@ void loop() {
       break;
 
     case '*':
-      pixelsp.fill(color_b, 0, ledCountp);
-      pixelsp.show();
+      strip.fill(color_b, 0, ledCountp);
+      strip.show();
       Serial.println("Palm On");
       break;
 
     case '0':
       while (keypad.getKey() == NO_KEY) {
-        pixelsp.fill(color_b, 0, ledCountp);
-        pixelsp.show();
+        strip.fill(color_b, 0, ledCountp);
+        strip.show();
         delay(60000);
-        pixelsp.fill(offp, 0, ledCountp);
-        pixelsp.show();
+        strip.fill(offp, 0, ledCountp);
+        strip.show();
         delay(100);
-        pixelsp.fill(color_b, 0, ledCountp);
-        pixelsp.show();
+        strip.fill(color_b, 0, ledCountp);
+        strip.show();
         delay(100);
-        pixelsp.fill(offp, 0, ledCountp);
-        pixelsp.show();
+        strip.fill(offp, 0, ledCountp);
+        strip.show();
         delay(100);
-        pixelsp.fill(color_b, 0, ledCountp);
-        pixelsp.show();
+        strip.fill(color_b, 0, ledCountp);
+        strip.show();
         delay(100);
-        pixelsp.fill(offp, 0, ledCountp);
-        pixelsp.show();
+        strip.fill(offp, 0, ledCountp);
+        strip.show();
         delay(100);
-        pixelsp.fill(color_b, 0, ledCountp);
-        pixelsp.show();
+        strip.fill(color_b, 0, ledCountp);
+        strip.show();
       }
       break;
 
@@ -235,10 +237,10 @@ void loop() {
       break;
 
     case 'D':
-      pixelsp.fill(offp, 0, ledCountp);
+      strip.fill(offp, 0, ledCountp);
       pixels.fill(off, 0, ledCount);
       pixels.show();
-      pixelsp.show();
+      strip.show();
       Serial.println("LEDs Off");
       break;
   }
