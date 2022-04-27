@@ -90,7 +90,7 @@ void rainbow(uint8_t wait) {
       pixels.setPixelColor(i, Wheel((i * 1 + j) & 255));
     }
     pixels.show();
-
+    delay(wait);
   }
 }
 void rainbowp(uint8_t wait) {
@@ -101,7 +101,7 @@ void rainbowp(uint8_t wait) {
       strip.setPixelColor(i, Wheelp((i * 1 + j) & 255));
     }
     strip.show();
-
+    delay(wait);
   }
 }
 
