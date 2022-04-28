@@ -82,26 +82,27 @@ void setup()
   strip.setBrightness(127);
 
 }
-void rainbow(uint8_t wait) {
+void rainbow() {
   uint16_t i, j, n;
 
   for (j = 0; j < 256; j++) {
     for (i = 0; i < pixels.numPixels(); i++) {
       pixels.setPixelColor(i, Wheel((i * 1 + j) & 255));
     }
-     for (n = 0; n < strip.numPixels(); n++) {
+    for (n = 0; n < strip.numPixels(); n++) {
       strip.setPixelColor(n, Wheelp((n * 1 + j) & 255));
     }
     strip.show();
     pixels.show();
-    delay(wait);
+    delay(10);
   }
+
 }
 
 
 float s = 100;
-long unsigned int color_a; // Color of the Chest LEDs
-long unsigned int color_b; // Color of the Palm LEDs
+long unsigned int color_a;
+long unsigned int color_b;
 void loop() {
 
 
@@ -201,8 +202,16 @@ void loop() {
       while (keypad.getKey() == NO_KEY) {
         strip.fill(color_b, 0, ledCountp);
         strip.show();
-        Serial.println("about to delay for 5 seconds");
-        delay(5000);
+        Serial.println("about to delay for 60 seconds");
+        int loopCounter = 0;
+        while (keypad.getKey() == NO_KEY && loopCounter <= 6000) {
+          loopCounter += 1;
+          delay(10);
+        }
+        if (keypad.getState() == PRESSED) {
+          Serial.println("key pressed; breaking out of loop");
+          break;
+        }
         strip.fill(offp, 0, ledCountp);
         strip.show();
         delay(100);
@@ -226,10 +235,10 @@ void loop() {
       break;
 
     case '#':
-      while(keypad.getKey() == NO_KEY){
+      while (keypad.getKey() == NO_KEY) {
+        rainbow();
 
-      rainbow(s);
-        
+
       }
       break;
 
@@ -242,6 +251,3 @@ void loop() {
       break;
   }
 }
-
-
-
