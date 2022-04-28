@@ -83,31 +83,25 @@ void setup()
 
 }
 void rainbow(uint8_t wait) {
-  uint16_t i, j;
+  uint16_t i, j, n;
 
   for (j = 0; j < 256; j++) {
     for (i = 0; i < pixels.numPixels(); i++) {
       pixels.setPixelColor(i, Wheel((i * 1 + j) & 255));
     }
+     for (n = 0; n < strip.numPixels(); n++) {
+      strip.setPixelColor(n, Wheelp((n * 1 + j) & 255));
+    }
+    strip.show();
     pixels.show();
     delay(wait);
   }
 }
-void rainbowp(uint8_t wait) {
-  uint16_t i, j;
 
-  for (j = 0; j < 256; j++) {
-    for (i = 0; i < strip.numPixels(); i++) {
-      strip.setPixelColor(i, Wheelp((i * 1 + j) & 255));
-    }
-    strip.show();
-    delay(wait);
-  }
-}
 
-float s;
-long unsigned int color_a;
-long unsigned int color_b;
+float s = 100;
+long unsigned int color_a; // Color of the Chest LEDs
+long unsigned int color_b; // Color of the Palm LEDs
 void loop() {
 
 
@@ -235,7 +229,7 @@ void loop() {
       while(keypad.getKey() == NO_KEY){
 
       rainbow(s);
-      rainbowp(s);
+        
       }
       break;
 
