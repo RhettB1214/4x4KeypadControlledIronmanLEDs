@@ -1,5 +1,6 @@
 #include <Adafruit_NeoPixel.h>
-
+#include <FastLED_NeoPixel.h>
+#include <FastLED.h>
 #include <Keypad.h>
 
 
@@ -14,23 +15,30 @@ char hexaKeys[ROWS][COLS] = {
 };
 byte rowPins[ROWS] = {22, 24, 26, 28}; //connect to the row pinouts of the keypad
 byte colPins[COLS] = {23, 25, 27, 29}; //connect to the column pinouts of the keypad
-
+bool Rainbow;
 Keypad keypad = Keypad( makeKeymap(hexaKeys), rowPins, colPins, ROWS, COLS );
-int pin = 6;
-int ledCount = 12;
-int pinp = 3;
-int ledCountp = 24;
-Adafruit_NeoPixel pixels(ledCount, pin, NEO_RGB + NEO_KHZ800);
-Adafruit_NeoPixel strip(ledCountp, pinp, NEO_RGB + NEO_KHZ800);
+#define pin 6
+#define ledCount 12
+#define pinp 3
+#define ledCountp 24
+#define basePin 5
+#define baseLEDs 36
+CRGB leds [baseLEDs];
+FastLED_NeoPixel_Variant base(leds, baseLEDs);
+FastLED_NeoPixel <ledCount, pin, NEO_RGB + NEO_KHZ800> pixels;
+FastLED_NeoPixel <ledCountp, pinp, NEO_RGB + NEO_KHZ800> strip;
+
+
+
 
 int delayval = 100; // timing delay in milliseconds
 uint32_t off = pixels.Color(0, 0, 0);
-uint32_t blue = pixels.Color(51, 153, 255);
+uint32_t blue = pixels.Color(28, 28, 255);
 uint32_t purple = pixels.Color(255, 0, 255);
 uint32_t red = pixels.Color(255, 0, 0);
 uint32_t white = pixels.Color(200, 200, 200);
 uint32_t offp = strip.Color(0, 0, 0);
-uint32_t bluep = strip.Color(51, 153, 255);
+uint32_t bluep = strip.Color(28, 28, 255);
 uint32_t purplep = strip.Color(255, 0, 255);
 uint32_t redp = strip.Color(255, 0, 0);
 uint32_t whitep = strip.Color(200, 200, 200);
@@ -72,7 +80,7 @@ uint32_t Wheelp(byte WheelpPos) {
 }
 void setup()
 {
-
+  pinMode(36, OUTPUT);
   Serial.begin(9600);
   pixels.begin();
   pixels.show();
@@ -82,9 +90,10 @@ void setup()
   strip.setBrightness(127);
 
 }
-void rainbow() {
+void rainbow(int wait) {
   uint16_t i, j, n;
-
+  Rainbow = true;
+ while(Rainbow == true){
   for (j = 0; j < 256; j++) {
     for (i = 0; i < pixels.numPixels(); i++) {
       pixels.setPixelColor(i, Wheel((i * 1 + j) & 255));
@@ -94,17 +103,22 @@ void rainbow() {
     }
     strip.show();
     pixels.show();
-    delay(10);
+    delay(wait);
+    if (keypad.getKey() != NO_KEY) {
+          Serial.println("key pressed; breaking out of loop");
+          Rainbow = false;
+         break;
+        }
   }
-
+  
+ }
 }
 
 
-float s = 100;
 long unsigned int color_a;
 long unsigned int color_b;
 void loop() {
-
+    analogWrite(36, 255);
 
   char input = keypad.getKey();
   if (input != NO_KEY) {
@@ -115,8 +129,9 @@ void loop() {
   switch (input) {
 
     case '1':
-      color_a = blue;
-      color_b = bluep;
+     // color_a = blue;
+    //  color_b = bluep;
+    digitalWrite(36, HIGH);
       break;
 
     case '2':
@@ -169,7 +184,7 @@ void loop() {
       for (int x = 1; x <= ledCount; x++) {
         pixels.fill(color_a, 0, x);
         pixels.show();
-        delay(50);
+        delay(250); 
       }
       break;
 
@@ -236,10 +251,12 @@ void loop() {
 
     case '#':
       while (keypad.getKey() == NO_KEY) {
-        rainbow();
-
-
+        rainbow(10);
+     if (Rainbow == false){
+      break;
+     }
       }
+      Serial.println("Rainbow Loop left");
       break;
 
     case 'D':
